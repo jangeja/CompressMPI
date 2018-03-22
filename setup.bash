@@ -1,8 +1,19 @@
 # Cloning all repos
-#git clone https://github.com/lz4/lz4.git lz4
-#git clone https://github.com/andikleen/snappy-c.git snappy
-#git clone https://github.com/richgel999/miniz.git miniz
-#git clone https://github.com/open-mpi/ompi.git mpi
+if [ ! -d lz4 ]; then
+  git clone https://github.com/lz4/lz4.git lz4
+fi
+
+if [ ! -d snappy ]; then
+  git clone https://github.com/andikleen/snappy-c.git snappy
+fi
+
+if [ ! -d miniz ]; then
+  git clone https://github.com/richgel999/miniz.git miniz
+fi
+
+if [ ! -d mpi ]; then
+  git clone https://github.com/open-mpi/ompi.git mpi
+fi
 
 # Copying all files to relevant dirs
 CUR_DIR=$PWD
@@ -11,7 +22,7 @@ LIBS_TO_ADD="-Wno-error=unused-command-line-argument $CUR_DIR/miniz/miniz.o $CUR
 
 FLAGS_TO_ADD="-Wno-error=unused-command-line-argument -I $CUR_DIR/miniz -I $CUR_DIR/snappy -I $CUR_DIR/lz4/lib "
 
-# echo "Running autogen for mpi" First check if we need to run autogen
+echo "Running autogen for mpi" First check if we need to run autogen
 if [ ! -f mpi/configure ]; then
 cd mpi && ./autogen.pl && ./configure --prefix=$CUR_DIR/mpiBuild && cd ..
 fi
@@ -35,20 +46,20 @@ sed -i "" "s,^CFLAGS = ,&$LIBS_TO_ADD," $CUR_DIR/mpi/ompi/tools/ompi_info/Makefi
 sed -i "" "s,^CFLAGS = ,&$FLAGS_TO_ADD," $CUR_DIR/mpi/ompi/mpi/c/profile/Makefile
 sed -i "" "s,^CFLAGS = ,&$FLAGS_TO_ADD," $CUR_DIR/mpi/ompi/mpi/c/Makefile
 
-# mkdir -p mpiBuild
-#
-#
-# echo "Building LZ4"
-# cd lz4 && make && cd ..
-#
-# echo "Building snappy"
-# cd snappy && make && cd ..
-#
-# echo "Building miniz"
-# cd miniz && make && cd ..
-#
-# echo "Building MPI"
-# cd mpi && make && make install
+mkdir -p mpiBuild
+
+
+echo "Building LZ4"
+cd lz4 && make && cd ..
+
+echo "Building snappy"
+cd snappy && make && cd ..
+
+echo "Building miniz"
+cd miniz && make && cd ..
+
+echo "Building MPI"
+cd mpi && make && make install
 
 echo "ALL DONE"
 echo "You must put these lines in your ~/.bashrc or ~/.bash_profile"
