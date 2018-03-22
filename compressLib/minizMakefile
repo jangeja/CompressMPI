@@ -1,0 +1,5 @@
+
+all: miniz
+
+miniz:
+	gcc -c miniz.c miniz_tdef.c miniz_tinfl.c miniz_zip.c
